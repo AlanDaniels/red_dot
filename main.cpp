@@ -7,6 +7,11 @@ int main(void)
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "raylib [core] example - basic window");
     SetTargetFPS(60);
+
+    InitAudioDevice();
+    Sound another = LoadSound("../Another World.mp3");
+    PlaySound(another);
+
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
