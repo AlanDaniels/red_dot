@@ -4,6 +4,7 @@ int main(void)
 {
     constexpr int SCREEN_WIDTH = 800;
     constexpr int SCREEN_HEIGHT = 450;
+    constexpr float MOVEMENT = 2.0f;
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "raylib [core] example - basic window");
     SetTargetFPS(60);
@@ -16,10 +17,10 @@ int main(void)
 
     while (!WindowShouldClose()) {
 
-        if (IsKeyDown(KEY_RIGHT)) ballPosition.x += 2.0f;
-        if (IsKeyDown(KEY_LEFT)) ballPosition.x -= 2.0f;
-        if (IsKeyDown(KEY_UP)) ballPosition.y -= 2.0f;
-        if (IsKeyDown(KEY_DOWN)) ballPosition.y += 2.0f;
+        if (IsKeyDown(KEY_RIGHT)) ballPosition.x += MOVEMENT;
+        if (IsKeyDown(KEY_LEFT)) ballPosition.x -= MOVEMENT;
+        if (IsKeyDown(KEY_UP)) ballPosition.y -= MOVEMENT;
+        if (IsKeyDown(KEY_DOWN)) ballPosition.y += MOVEMENT;
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
