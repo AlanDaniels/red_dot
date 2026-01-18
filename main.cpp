@@ -1,9 +1,11 @@
+#include <cstdio>
+
 #include "raylib.h"
 
 int main(void)
 {
-    constexpr int SCREEN_WIDTH = 800;
-    constexpr int SCREEN_HEIGHT = 450;
+    constexpr int SCREEN_WIDTH = 1024;
+    constexpr int SCREEN_HEIGHT = 768;
     constexpr float MOVEMENT = 2.0f;
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "raylib [core] example - basic window");
@@ -27,6 +29,9 @@ int main(void)
         DrawText("move the ball with arrow keys", 10, 10, 20, DARKGRAY);
         DrawCircleV(ballPosition, 50, MAROON);
         EndDrawing();
+
+        Vector2 mousePos = GetMousePosition();
+        printf("Mouse Position = x: %0.f, y: %0.f\n", mousePos.x, mousePos.y);
     }
 
     CloseWindow();
