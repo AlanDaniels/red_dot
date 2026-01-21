@@ -1,12 +1,10 @@
 #ifndef MAIN_HPP
 #define MAIN_HPP
 
+#include <memory>
 #include <string>
 #include "raylib.h"
-
-constexpr int SCREEN_WIDTH = 1024;
-constexpr int SCREEN_HEIGHT = 768;
-constexpr int FONT_BASE_SIZE = 30;
+#include "dot_collection.hpp"
 
 
 enum class GAME_MODE {
@@ -19,6 +17,7 @@ enum class GAME_MODE {
 class RedDotGame {
 public:
     RedDotGame();
+    ~RedDotGame() = default;
 
     bool init();
     bool detectLeftClick();
@@ -31,7 +30,9 @@ public:
 
     // This is a singleton. Disable copying and moving.
     RedDotGame(const RedDotGame &that) = delete;
-    RedDotGame& operator=(RedDotGame const&) = delete;
+    RedDotGame(const RedDotGame &&that) = delete;
+    RedDotGame& operator=(RedDotGame const &that) = delete;
+    RedDotGame&& operator=(RedDotGame const &&that) = delete;
 
 private:
     GAME_MODE m_game_mode;
@@ -39,6 +40,7 @@ private:
     Font m_default_font;
     bool m_is_mouse_down;
     Vector2 m_mouse_pos;
+    std::unique_ptr<DotCollection> m_dot_collection;
 };
 
 #endif

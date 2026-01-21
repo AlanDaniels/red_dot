@@ -1,6 +1,7 @@
 #include <cstdio>
 
 #include "main.hpp"
+#include "constants.hpp"
 
 
 // Constructor.
@@ -9,6 +10,7 @@ RedDotGame::RedDotGame()
     m_game_mode = GAME_MODE::TITLE;
     m_is_mouse_down = false;
     m_mouse_pos = Vector2(0.0f, 0.0f);
+    m_dot_collection = nullptr;
 }
 
 
@@ -23,6 +25,9 @@ bool RedDotGame::init()
     PlaySound(m_soundtrack);
 
     m_default_font = GetFontDefault();
+
+    m_dot_collection = std::make_unique<DotCollection>();
+    m_dot_collection->init();
     return true;
 }
 
@@ -72,7 +77,8 @@ void RedDotGame::drawPlayingScreen()
 {
     BeginDrawing();
     ClearBackground(RAYWHITE);
-    drawTextInCenter("Move the ball with arrow keys.");
+    // drawTextInCenter("Move the ball with arrow keys.");
+    m_dot_collection->render();
     EndDrawing();
 
     if (detectLeftClick()) {
