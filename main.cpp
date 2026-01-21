@@ -18,8 +18,6 @@ bool RedDotGame::init()
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Click The Red Dot");
     SetTargetFPS(60);
 
-    m_ball_pos = { SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f };
-
     InitAudioDevice();
     m_soundtrack = LoadSound("../Another World.mp3");
     PlaySound(m_soundtrack);
@@ -72,15 +70,9 @@ void RedDotGame::drawTitleScreen()
 // Draw what's happening during actual gameplay.
 void RedDotGame::drawPlayingScreen()
 {
-    if (IsKeyDown(KEY_RIGHT)) m_ball_pos.x += MOVEMENT;
-    if (IsKeyDown(KEY_LEFT)) m_ball_pos.x -= MOVEMENT;
-    if (IsKeyDown(KEY_UP)) m_ball_pos.y -= MOVEMENT;
-    if (IsKeyDown(KEY_DOWN)) m_ball_pos.y += MOVEMENT;
-
     BeginDrawing();
     ClearBackground(RAYWHITE);
     drawTextInCenter("Move the ball with arrow keys.");
-    DrawCircleV(m_ball_pos, 50, MAROON);
     EndDrawing();
 
     if (detectLeftClick()) {

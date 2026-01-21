@@ -6,7 +6,6 @@
 
 constexpr int SCREEN_WIDTH = 1024;
 constexpr int SCREEN_HEIGHT = 768;
-constexpr float MOVEMENT = 2.0f;
 constexpr int FONT_BASE_SIZE = 30;
 
 
@@ -38,7 +37,6 @@ private:
     GAME_MODE m_game_mode;
     Sound m_soundtrack;
     Font m_default_font;
-    Vector2 m_ball_pos;
     bool m_is_mouse_down;
     Vector2 m_mouse_pos;
 };
