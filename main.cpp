@@ -23,7 +23,19 @@ bool RedDotGame::init()
     InitAudioDevice();
     m_soundtrack = LoadSound("../Another World.mp3");
     PlaySound(m_soundtrack);
+
+    m_default_font = GetFontDefault();
     return true;
+}
+
+
+// Draw text in the center of the screen.
+void RedDotGame::drawTextInCenter(const std::string &text) const
+{
+    Vector2 dims = MeasureTextEx(m_default_font, text.c_str(), FONT_BASE_SIZE, 0);
+    const float x = (SCREEN_WIDTH / 2) - (dims.x / 2);
+    const float y = (SCREEN_HEIGHT / 2) - (dims.y / 2);
+    DrawText(text.c_str(), x, y, FONT_BASE_SIZE, DARKGRAY);
 }
 
 
@@ -48,7 +60,7 @@ void RedDotGame::drawTitleScreen()
 {
     BeginDrawing();
     ClearBackground(RAYWHITE);
-    DrawText("Click anywhere to begin.", 10, 10, 20, DARKGRAY);
+    drawTextInCenter("Click anywhere to begin.");
     EndDrawing();
 
     if (detectLeftClick()) {
@@ -67,7 +79,7 @@ void RedDotGame::drawPlayingScreen()
 
     BeginDrawing();
     ClearBackground(RAYWHITE);
-    DrawText("Move the ball with arrow keys.", 10, 10, 20, DARKGRAY);
+    drawTextInCenter("Move the ball with arrow keys.");
     DrawCircleV(m_ball_pos, 50, MAROON);
     EndDrawing();
 
@@ -82,7 +94,7 @@ void RedDotGame::drawFinalScreen()
 {
     BeginDrawing();
     ClearBackground(RAYWHITE);
-    DrawText("All done!", 10, 10, 20, DARKGRAY);
+    drawTextInCenter("All done!");
     EndDrawing();
 }
 

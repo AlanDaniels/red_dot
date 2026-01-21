@@ -1,11 +1,13 @@
 #ifndef MAIN_HPP
 #define MAIN_HPP
 
+#include <string>
 #include "raylib.h"
 
 constexpr int SCREEN_WIDTH = 1024;
 constexpr int SCREEN_HEIGHT = 768;
 constexpr float MOVEMENT = 2.0f;
+constexpr int FONT_BASE_SIZE = 30;
 
 
 enum class GAME_MODE {
@@ -21,6 +23,8 @@ public:
 
     bool init();
     bool detectLeftClick();
+    void drawTextInCenter(const std::string &text) const;
+
     void drawTitleScreen();
     void drawPlayingScreen();
     void drawFinalScreen();
@@ -33,6 +37,7 @@ public:
 private:
     GAME_MODE m_game_mode;
     Sound m_soundtrack;
+    Font m_default_font;
     Vector2 m_ball_pos;
     bool m_is_mouse_down;
     Vector2 m_mouse_pos;
