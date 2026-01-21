@@ -11,7 +11,7 @@ constexpr float MOVEMENT = 2.0f;
 enum class GAME_MODE {
     TITLE,
     PLAYING,
-    DONE
+    FINAL
 };
 
 
@@ -20,9 +20,10 @@ public:
     RedDotGame();
 
     bool init();
+    bool detectLeftClick();
     void drawTitleScreen();
     void drawPlayingScreen();
-    void drawDoneScreen();
+    void drawFinalScreen();
     void mainLoop();
 
     // This is a singleton. Disable copying and moving.
@@ -31,9 +32,10 @@ public:
 
 private:
     GAME_MODE m_game_mode;
-    bool m_mouse_clicked;
     Sound m_soundtrack;
     Vector2 m_ball_pos;
+    bool m_is_mouse_down;
+    Vector2 m_mouse_pos;
 };
 
 #endif
