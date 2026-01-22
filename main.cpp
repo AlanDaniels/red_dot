@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <ctime>
 
 #include "main.hpp"
 #include "constants.hpp"
@@ -24,8 +25,10 @@ bool RedDotGame::init()
     m_soundtrack = LoadSound("../Another World.mp3");
     PlaySound(m_soundtrack);
 
-    m_default_font = GetFontDefault();
+    unsigned int current_time = static_cast<unsigned int>(time(nullptr));
+    SetRandomSeed(current_time);
 
+    m_default_font = GetFontDefault();
     m_dot_collection = std::make_unique<DotCollection>();
     m_dot_collection->init();
     return true;
