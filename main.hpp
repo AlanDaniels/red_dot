@@ -26,7 +26,7 @@ public:
 
     void drawTitleScreen();
     void drawPlayingScreen();
-    void drawFinalScreen();
+    void drawFinalScreen() const;
     void mainLoop();
 
     // This is a singleton. Disable copying and moving.
@@ -42,6 +42,7 @@ private:
     bool m_is_mouse_down;
     Vector2 m_mouse_pos;
     long m_start_time;
+    long m_finish_time;
 
     std::unique_ptr<DotCollection> m_dot_collection;
 };

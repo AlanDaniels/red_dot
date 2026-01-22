@@ -103,7 +103,7 @@ void RedDotGame::drawPlayingScreen()
 {
     long elapsed = GetCurrentTime() - m_start_time;
     char msg[64];
-    sprintf(msg, "Elapsed time = %.1f seconds", elapsed / 1000.f);
+    sprintf(msg, "Elapsed time = %.2f seconds", elapsed / 1000.f);
 
     BeginDrawing();
     ClearBackground(RAYWHITE);
@@ -113,16 +113,21 @@ void RedDotGame::drawPlayingScreen()
 
     if (detectLeftClick()) {
         m_game_mode = GAME_MODE::FINAL;
+        m_finish_time = elapsed;
     }
 }
 
 
 // The game's all done. Show the final score.
-void RedDotGame::drawFinalScreen()
+// TODO: I'd use std::format here, but that's C++ 20 only.
+void RedDotGame::drawFinalScreen() const
 {
+    char msg[64];
+    sprintf(msg, "Congrats!\nYou finished in %.2f seconds", m_finish_time / 1000.f);
+
     BeginDrawing();
     ClearBackground(RAYWHITE);
-    drawTextInCenter("All done!");
+    drawTextInCenter(msg);
     EndDrawing();
 }
 
