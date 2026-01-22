@@ -21,6 +21,7 @@ public:
 
     bool init();
     bool detectLeftClick();
+    static void drawTextInUpperLeft(const std::string &text);
     void drawTextInCenter(const std::string &text) const;
 
     void drawTitleScreen();
@@ -40,6 +41,8 @@ private:
     Font m_default_font;
     bool m_is_mouse_down;
     Vector2 m_mouse_pos;
+    long m_start_time;
+
     std::unique_ptr<DotCollection> m_dot_collection;
 };
 

@@ -1,9 +1,23 @@
 #include <cstdio>
 #include <ctime>
+#include <chrono>
 
 #include "main.hpp"
 #include "constants.hpp"
 
+
+// Get the current time in milliseconds. Alas, Raylib doesn't provide this, only seconds.
+// https://stackoverflow.com/questions/2831841/how-to-get-the-time-in-milliseconds-in-c#2834294
+long GetCurrentTime()
+{
+    namespace sc = std::chrono;
+
+    sc::time_point time = sc::system_clock::now();
+    sc::duration since_epoch = time.time_since_epoch();
+    sc::milliseconds msecs = sc::duration_cast<sc::milliseconds>(since_epoch);
+    long now = msecs.count();
+    return now;
+}
 
 // Constructor.
 RedDotGame::RedDotGame()
@@ -12,6 +26,7 @@ RedDotGame::RedDotGame()
     m_is_mouse_down = false;
     m_mouse_pos = Vector2(0.0f, 0.0f);
     m_dot_collection = nullptr;
+    m_start_time = 0L;
 }
 
 
@@ -32,6 +47,13 @@ bool RedDotGame::init()
     m_dot_collection = std::make_unique<DotCollection>();
     m_dot_collection->init();
     return true;
+}
+
+
+// Draw text in the upper left corner of the screen.
+void RedDotGame::drawTextInUpperLeft(const std::string& text)
+{
+    DrawText(text.c_str(), 20, 20, FONT_BASE_SIZE, DARKGRAY);
 }
 
 
@@ -60,7 +82,6 @@ bool RedDotGame::detectLeftClick()
 }
 
 
-
 // Draw the title screen.
 void RedDotGame::drawTitleScreen()
 {
@@ -71,16 +92,22 @@ void RedDotGame::drawTitleScreen()
 
     if (detectLeftClick()) {
         m_game_mode = GAME_MODE::PLAYING;
+        m_start_time = GetCurrentTime();
     }
 }
 
 
 // Draw what's happening during actual gameplay.
+// TODO: I'd use std::format here, but that's C++ 20 only.
 void RedDotGame::drawPlayingScreen()
 {
+    long elapsed = GetCurrentTime() - m_start_time;
+    char msg[64];
+    sprintf(msg, "Elapsed time = %.1f seconds", elapsed / 1000.f);
+
     BeginDrawing();
     ClearBackground(RAYWHITE);
-    // drawTextInCenter("Move the ball with arrow keys.");
+    drawTextInUpperLeft(msg);
     m_dot_collection->render();
     EndDrawing();
 
