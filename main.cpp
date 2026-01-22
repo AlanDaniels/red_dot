@@ -24,7 +24,7 @@ RedDotGame::RedDotGame()
 {
     m_game_mode = GAME_MODE::TITLE;
     m_is_mouse_down = false;
-    m_mouse_pos = Vector2(0.0f, 0.0f);
+    m_click_pos = Vector2(0.0f, 0.0f);
     m_dot_collection = nullptr;
     m_start_time = 0L;
 }
@@ -73,7 +73,7 @@ bool RedDotGame::detectLeftClick()
     bool pressed = IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
     if (!m_is_mouse_down && pressed) {
         m_is_mouse_down = true;
-        m_mouse_pos = GetMousePosition();
+        m_click_pos = GetMousePosition();
         return true;
     } else {
         m_is_mouse_down = false;
@@ -112,8 +112,10 @@ void RedDotGame::drawPlayingScreen()
     EndDrawing();
 
     if (detectLeftClick()) {
-        m_game_mode = GAME_MODE::FINAL;
-        m_finish_time = elapsed;
+        if (m_dot_collection->hitTest(m_click_pos)) {
+            m_game_mode = GAME_MODE::FINAL;
+            m_finish_time = elapsed;
+        }
     }
 }
 

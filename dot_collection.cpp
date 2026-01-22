@@ -1,3 +1,4 @@
+#include <cmath>
 #include "dot_collection.hpp"
 
 
@@ -25,12 +26,14 @@ void DotCollection::init()
     }
 
     // Now that we're done, pick a single one to be the red.
-    int rand_row = GetRandomValue(0, DOT_GRID_ROWS);
-    int rand_col = GetRandomValue(0, DOT_GRID_COLS);
+    int rand_row = GetRandomValue(0, DOT_GRID_ROWS - 1);
+    int rand_col = GetRandomValue(0, DOT_GRID_COLS - 1);
     m_dots[rand_row][rand_col].setColor(RED);
+    m_which_is_red = Vector2(rand_row, rand_col);
 }
 
 
+// Render all the dots on the screen.
 void DotCollection::render() const
 {
     for (int r = 0; r < DOT_GRID_ROWS; r++) {
@@ -43,3 +46,16 @@ void DotCollection::render() const
     }
 }
 
+
+// Hit test against our one true dot.
+bool DotCollection::hitTest(const Vector2 &pos) const
+{
+    int row = m_which_is_red.x;
+    int col = m_which_is_red.y;
+    Vector2 target = m_dots[row][col].getPos();
+    int x_diff = pos.x - target.x;
+    int y_diff = pos.y - target.y;
+    float distance = std::sqrt(std::pow(x_diff, 2) + pow(y_diff, 2));
+    bool result = (distance <= DOT_RADIUS);
+    return result;
+}

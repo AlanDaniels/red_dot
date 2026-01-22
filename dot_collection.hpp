@@ -35,6 +35,7 @@ public:
     ~DotCollection() = default;
     void init();
     void render() const;
+    bool hitTest(const Vector2 &pos) const;
 
     // Disable copying.
     DotCollection(const DotCollection &that) = delete;
@@ -42,6 +43,7 @@ public:
 
 private:
     std::array<std::array<Dot, DOT_GRID_ROWS>, DOT_GRID_COLS> m_dots;
+    Vector2 m_which_is_red;
 };
 
 #endif

@@ -40,7 +40,7 @@ private:
     Sound m_soundtrack;
     Font m_default_font;
     bool m_is_mouse_down;
-    Vector2 m_mouse_pos;
+    Vector2 m_click_pos;
     long m_start_time;
     long m_finish_time;
 
