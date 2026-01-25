@@ -44,6 +44,7 @@ bool RedDotGame::init()
     SetRandomSeed(current_time);
 
     m_default_font = GetFontDefault();
+    m_rounds_left = ROUNDS_PER_GAME;
     m_dot_collection = std::make_unique<DotCollection>();
     m_dot_collection->init();
     return true;
@@ -103,7 +104,9 @@ void RedDotGame::drawPlayingScreen()
 {
     long elapsed = GetCurrentTime() - m_start_time;
     char msg[64];
-    sprintf(msg, "Elapsed time = %.2f seconds", elapsed / 1000.f);
+    sprintf(msg,
+        "Elapsed time = %.2f seconds\n%d rounds left",
+        elapsed / 1000.f, m_rounds_left);
 
     BeginDrawing();
     ClearBackground(RAYWHITE);
@@ -112,10 +115,18 @@ void RedDotGame::drawPlayingScreen()
     EndDrawing();
 
     if (detectLeftClick()) {
+        // A successful click ends the current round.
         if (m_dot_collection->hitTest(m_click_pos)) {
-            m_game_mode = GAME_MODE::FINAL;
-            m_finish_time = elapsed;
+            m_dot_collection = std::make_unique<DotCollection>();
+            m_dot_collection->init();
+            m_rounds_left--;
         }
+    }
+
+    // If there are no rounds left, we're done.
+    if (m_rounds_left == 0) {
+        m_game_mode = GAME_MODE::FINAL;
+        m_finish_time = elapsed;
     }
 }
 

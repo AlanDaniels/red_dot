@@ -11,4 +11,6 @@ constexpr int DOT_GRID_COLS = 5;
 constexpr int DOT_SPACING = 150;
 constexpr int DOT_RADIUS = 50;
 
+constexpr int ROUNDS_PER_GAME = 5;
+
 #endif

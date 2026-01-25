@@ -43,6 +43,7 @@ private:
     Vector2 m_click_pos;
     long m_start_time;
     long m_finish_time;
+    int m_rounds_left;
 
     std::unique_ptr<DotCollection> m_dot_collection;
 };
