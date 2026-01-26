@@ -10,6 +10,7 @@
 enum class GAME_MODE {
     TITLE,
     PLAYING,
+    PENALTY,
     FINAL
 };
 
@@ -26,6 +27,7 @@ public:
 
     void drawTitleScreen();
     void drawPlayingScreen();
+    void drawPenaltyScreen();
     void drawFinalScreen() const;
     void mainLoop();
 
@@ -38,11 +40,13 @@ public:
 private:
     GAME_MODE m_game_mode;
     Sound m_soundtrack;
+    Sound m_finish_sound;
     Font m_default_font;
     bool m_is_mouse_down;
     Vector2 m_click_pos;
-    long m_start_time;
-    long m_finish_time;
+    long m_playing_start_time;
+    long m_playing_elapsed_time;
+    long m_penalty_start_time;
     int m_rounds_left;
 
     std::unique_ptr<DotCollection> m_dot_collection;

@@ -8,7 +8,7 @@
 
 // Get the current time in milliseconds. Alas, Raylib doesn't provide this, only seconds.
 // https://stackoverflow.com/questions/2831841/how-to-get-the-time-in-milliseconds-in-c#2834294
-long GetCurrentTime()
+long GetCurrentTimeMsecs()
 {
     namespace sc = std::chrono;
 
@@ -26,7 +26,9 @@ RedDotGame::RedDotGame()
     m_is_mouse_down = false;
     m_click_pos = Vector2(0.0f, 0.0f);
     m_dot_collection = nullptr;
-    m_start_time = 0L;
+    m_playing_start_time = 0L;
+    m_playing_elapsed_time = 0L;
+    m_penalty_start_time = 0L;
 }
 
 
@@ -39,6 +41,7 @@ bool RedDotGame::init()
     InitAudioDevice();
     m_soundtrack = LoadSound("../Another World.mp3");
     PlaySound(m_soundtrack);
+    m_finish_sound = LoadSound("../success-fanfare-trumpets-6185.mp3");
 
     unsigned int current_time = static_cast<unsigned int>(time(nullptr));
     SetRandomSeed(current_time);
@@ -93,7 +96,7 @@ void RedDotGame::drawTitleScreen()
 
     if (detectLeftClick()) {
         m_game_mode = GAME_MODE::PLAYING;
-        m_start_time = GetCurrentTime();
+        m_playing_start_time = GetCurrentTimeMsecs();
     }
 }
 
@@ -102,7 +105,7 @@ void RedDotGame::drawTitleScreen()
 // TODO: I'd use std::format here, but that's C++ 20 only.
 void RedDotGame::drawPlayingScreen()
 {
-    long elapsed = GetCurrentTime() - m_start_time;
+    long elapsed = GetCurrentTimeMsecs() - m_playing_start_time;
     char msg[64];
     sprintf(msg,
         "Elapsed time = %.2f seconds\n%d rounds left",
@@ -117,18 +120,49 @@ void RedDotGame::drawPlayingScreen()
     if (detectLeftClick()) {
         // A successful click ends the current round.
         if (m_dot_collection->hitTest(m_click_pos)) {
-            m_dot_collection = std::make_unique<DotCollection>();
-            m_dot_collection->init();
             m_rounds_left--;
+
+            // Start the next round.
+            if (m_rounds_left > 0) {
+                m_dot_collection = std::make_unique<DotCollection>();
+                m_dot_collection->init();
+            }
+
+            // But, if the games over, wrap it up.
+            else {
+                m_game_mode = GAME_MODE::FINAL;
+                m_playing_elapsed_time = elapsed;
+                PauseSound(m_soundtrack);
+                PlaySound(m_finish_sound);
+           }
+        }
+
+        // But if the player misses, it's penalty mode.
+        else {
+            m_penalty_start_time = GetCurrentTimeMsecs();
+            m_game_mode = GAME_MODE::PENALTY;
         }
     }
+}
 
-    // If there are no rounds left, we're done.
-    if (m_rounds_left == 0) {
-        m_game_mode = GAME_MODE::FINAL;
-        m_finish_time = elapsed;
+
+// Draw the penalty screen.
+void RedDotGame::drawPenaltyScreen()
+{
+    long elapsed = GetCurrentTimeMsecs() - m_penalty_start_time;
+    char msg[64];
+    sprintf(msg, "OOPS! The penalty ends in %.2f seconds", elapsed / 1000.f);
+
+    BeginDrawing();
+    ClearBackground(RAYWHITE);
+    drawTextInCenter(msg);
+    EndDrawing();
+
+    if (elapsed >= PENALTY_TIMEOUT_MSECS) {
+        m_game_mode = GAME_MODE::PLAYING;
     }
 }
+
 
 
 // The game's all done. Show the final score.
@@ -136,7 +170,7 @@ void RedDotGame::drawPlayingScreen()
 void RedDotGame::drawFinalScreen() const
 {
     char msg[64];
-    sprintf(msg, "Congrats!\nYou finished in %.2f seconds", m_finish_time / 1000.f);
+    sprintf(msg, "Congrats!\nYou finished in %.2f seconds", m_playing_elapsed_time / 1000.f);
 
     BeginDrawing();
     ClearBackground(RAYWHITE);
@@ -154,6 +188,9 @@ void RedDotGame::mainLoop()
             break;
         case GAME_MODE::PLAYING:
             drawPlayingScreen();
+            break;
+        case GAME_MODE::PENALTY:
+            drawPenaltyScreen();
             break;
         case GAME_MODE::FINAL:
             drawFinalScreen();

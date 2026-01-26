@@ -12,5 +12,6 @@ constexpr int DOT_SPACING = 150;
 constexpr int DOT_RADIUS = 50;
 
 constexpr int ROUNDS_PER_GAME = 5;
+constexpr int PENALTY_TIMEOUT_MSECS = 3000;
 
 #endif
