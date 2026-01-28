@@ -39,6 +39,8 @@ public:
 
 private:
     GAME_MODE m_game_mode;
+    Sound m_click_sound;
+    Sound m_error_sound;
     Sound m_finish_sound;
     Font m_default_font;
     bool m_is_mouse_down;

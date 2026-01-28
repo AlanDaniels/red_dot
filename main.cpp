@@ -39,6 +39,8 @@ bool RedDotGame::init()
     SetTargetFPS(60);
 
     InitAudioDevice();
+    m_click_sound = LoadSound("../computer-mouse-click-351398.wav");
+    m_error_sound = LoadSound("../error-08-206492.mp3");
     m_finish_sound = LoadSound("../success-fanfare-trumpets-6185.mp3");
 
     unsigned int current_time = static_cast<unsigned int>(time(nullptr));
@@ -93,6 +95,7 @@ void RedDotGame::drawTitleScreen()
     EndDrawing();
 
     if (detectLeftClick()) {
+        PlaySound(m_click_sound);
         m_game_mode = GAME_MODE::PLAYING;
         m_playing_start_time = GetCurrentTimeMsecs();
     }
@@ -118,6 +121,7 @@ void RedDotGame::drawPlayingScreen()
     if (detectLeftClick()) {
         // A successful click ends the current round.
         if (m_dot_collection->hitTest(m_click_pos)) {
+            PlaySound(m_click_sound);
             m_rounds_left--;
 
             // Start the next round.
@@ -136,6 +140,7 @@ void RedDotGame::drawPlayingScreen()
 
         // But if the player misses, it's penalty mode.
         else {
+            PlaySound(m_error_sound);
             m_penalty_start_time = GetCurrentTimeMsecs();
             m_game_mode = GAME_MODE::PENALTY;
         }
