@@ -8,10 +8,14 @@ constexpr int FONT_BASE_SIZE = 30;
 constexpr int DOT_GRID_ROWS = 5;
 constexpr int DOT_GRID_COLS = 5;
 
-constexpr int DOT_SPACING = 150;
-constexpr int DOT_RADIUS = 50;
+constexpr int DOT_SPACING = 175;
+constexpr int DOT_GROWTH_TIME_MSECS = 2000;
+constexpr int DOT_BEGIN_RADIUS = 5;
+constexpr int DOT_END_RADIUS = 80;
 
 constexpr int ROUNDS_PER_GAME = 5;
 constexpr int PENALTY_TIMEOUT_MSECS = 3000;
+
+extern long GetCurrentTimeMsecs();
 
 #endif

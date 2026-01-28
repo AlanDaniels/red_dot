@@ -2,8 +2,10 @@
 #define DOT_COLLECTION_HPP
 
 #include <array>
+#include <memory>
 #include "raylib.h"
 #include "constants.hpp"
+#include "linear_lerp.hpp"
 
 
 class Dot {
@@ -44,6 +46,7 @@ public:
 private:
     std::array<std::array<Dot, DOT_GRID_ROWS>, DOT_GRID_COLS> m_dots;
     Vector2 m_which_is_red;
+    std::unique_ptr<LinearLerp> m_lerp;
 };
 
 #endif
