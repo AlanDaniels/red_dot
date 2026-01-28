@@ -38,6 +38,8 @@ public:
     void init();
     void render() const;
     bool hitTest(const Vector2 &pos) const;
+    void pauseDotGrowth(long current_time_msecs);
+    void resumeDotGrowth(long current_time_msecs);
 
     // Disable copying.
     DotCollection(const DotCollection &that) = delete;

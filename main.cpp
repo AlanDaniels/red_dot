@@ -106,7 +106,8 @@ void RedDotGame::drawTitleScreen()
 // TODO: I'd use std::format here, but that's C++ 20 only.
 void RedDotGame::drawPlayingScreen()
 {
-    long elapsed = GetCurrentTimeMsecs() - m_playing_start_time;
+    long now = GetCurrentTimeMsecs();
+    long elapsed = now - m_playing_start_time;
     char msg[64];
     sprintf(msg,
         "Elapsed time = %.2f seconds\n%d rounds left",
@@ -141,6 +142,7 @@ void RedDotGame::drawPlayingScreen()
         // But if the player misses, it's penalty mode.
         else {
             PlaySound(m_error_sound);
+            m_dot_collection->pauseDotGrowth(now);
             m_penalty_start_time = GetCurrentTimeMsecs();
             m_game_mode = GAME_MODE::PENALTY;
         }
@@ -151,9 +153,10 @@ void RedDotGame::drawPlayingScreen()
 // Draw the penalty screen.
 void RedDotGame::drawPenaltyScreen()
 {
-    long elapsed = GetCurrentTimeMsecs() - m_penalty_start_time;
+    long now = GetCurrentTimeMsecs();
+    long elapsed = now - m_penalty_start_time;
     char msg[64];
-    sprintf(msg, "OOPS! The penalty ends in %.2f seconds", elapsed / 1000.f);
+    sprintf(msg, "OOPS! The penalty ends in %.1f seconds", elapsed / 1000.f);
 
     BeginDrawing();
     ClearBackground(RAYWHITE);
@@ -161,6 +164,7 @@ void RedDotGame::drawPenaltyScreen()
     EndDrawing();
 
     if (elapsed >= PENALTY_TIMEOUT_MSECS) {
+        m_dot_collection->resumeDotGrowth(now);
         m_game_mode = GAME_MODE::PLAYING;
     }
 }

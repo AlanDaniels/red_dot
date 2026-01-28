@@ -9,7 +9,7 @@ constexpr int DOT_GRID_ROWS = 5;
 constexpr int DOT_GRID_COLS = 5;
 
 constexpr int DOT_SPACING = 175;
-constexpr int DOT_GROWTH_TIME_MSECS = 2000;
+constexpr int DOT_GROWTH_TIME_MSECS = 10000;
 constexpr int DOT_BEGIN_RADIUS = 5;
 constexpr int DOT_END_RADIUS = 80;
 

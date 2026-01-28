@@ -67,3 +67,14 @@ bool DotCollection::hitTest(const Vector2 &pos) const
     bool result = (distance <= radius);
     return result;
 }
+
+
+void DotCollection::pauseDotGrowth(long current_time_msecs)
+{
+    m_lerp->pause(current_time_msecs);
+}
+
+void DotCollection::resumeDotGrowth(long current_time_msecs)
+{
+    m_lerp->resume(current_time_msecs);
+}
