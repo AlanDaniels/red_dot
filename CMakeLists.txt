@@ -7,7 +7,8 @@ add_executable(red_dot main.cpp
         main.hpp
         dot_collection.hpp
         dot_collection.cpp
-        constants.hpp)
+        constants.hpp
+        linear_lerp.hpp)
 target_include_directories(red_dot PRIVATE "~/GitRepos/raylib/src")
 target_link_directories(red_dot PRIVATE "~/GitRepos/raylib/src")
 target_link_libraries(red_dot raylib)
