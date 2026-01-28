@@ -39,8 +39,6 @@ bool RedDotGame::init()
     SetTargetFPS(60);
 
     InitAudioDevice();
-    m_soundtrack = LoadSound("../Another World.mp3");
-    PlaySound(m_soundtrack);
     m_finish_sound = LoadSound("../success-fanfare-trumpets-6185.mp3");
 
     unsigned int current_time = static_cast<unsigned int>(time(nullptr));
@@ -132,7 +130,6 @@ void RedDotGame::drawPlayingScreen()
             else {
                 m_game_mode = GAME_MODE::FINAL;
                 m_playing_elapsed_time = elapsed;
-                PauseSound(m_soundtrack);
                 PlaySound(m_finish_sound);
            }
         }
