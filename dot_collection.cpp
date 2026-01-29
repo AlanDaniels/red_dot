@@ -69,12 +69,12 @@ bool DotCollection::hitTest(const Vector2 &pos) const
 }
 
 
-void DotCollection::pauseDotGrowth(long current_time_msecs)
+void DotCollection::pauseDotGrowth(long current_time_msecs) const
 {
     m_lerp->pause(current_time_msecs);
 }
 
-void DotCollection::resumeDotGrowth(long current_time_msecs)
+void DotCollection::resumeDotGrowth(long current_time_msecs) const
 {
     m_lerp->resume(current_time_msecs);
 }
