@@ -35,7 +35,6 @@ float LinearLerp::get(long current_time) const
         long elapsed_msecs = current_time - m_begin_time_msecs;
         float diff = static_cast<float>(elapsed_msecs) / static_cast<float>(m_duration_msecs);
         float result = m_begin_val + (diff * (m_end_val - m_begin_val));
-        printf("Result = %.2f\n", result);
         fflush(stdout);
         return result;
     }

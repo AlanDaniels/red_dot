@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdio>
 #include <ctime>
 #include <chrono>
@@ -29,6 +30,7 @@ RedDotGame::RedDotGame()
     m_playing_start_time = 0L;
     m_playing_elapsed_time = 0L;
     m_penalty_start_time = 0L;
+    m_penalty_count = 0;
 }
 
 
@@ -143,6 +145,8 @@ void RedDotGame::drawPlayingScreen()
         else {
             PlaySound(m_error_sound);
             m_dot_collection->pauseDotGrowth(now);
+
+            m_penalty_count++;
             m_penalty_start_time = GetCurrentTimeMsecs();
             m_game_mode = GAME_MODE::PENALTY;
         }
@@ -155,15 +159,19 @@ void RedDotGame::drawPenaltyScreen()
 {
     long now = GetCurrentTimeMsecs();
     long elapsed = now - m_penalty_start_time;
+
+    long how_long = std::min(m_penalty_count * INCR_PENALTY_TIMEOUT_MSECS, MAX_PENALTY_TIMEOUT_MSECS);
+    long inverted = ((how_long - elapsed) / 1000.f) + 1;
+
     char msg[64];
-    sprintf(msg, "OOPS! The penalty ends in %.1f seconds", elapsed / 1000.f);
+    sprintf(msg, "OOPS! The penalty ends in %ld seconds...", inverted);
 
     BeginDrawing();
     ClearBackground(RAYWHITE);
     drawTextInCenter(msg);
     EndDrawing();
 
-    if (elapsed >= PENALTY_TIMEOUT_MSECS) {
+    if (elapsed >= how_long) {
         m_dot_collection->resumeDotGrowth(now);
         m_game_mode = GAME_MODE::PLAYING;
     }

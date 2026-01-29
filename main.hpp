@@ -48,6 +48,7 @@ private:
     long m_playing_start_time;
     long m_playing_elapsed_time;
     long m_penalty_start_time;
+    int m_penalty_count;
     int m_rounds_left;
 
     std::unique_ptr<DotCollection> m_dot_collection;
