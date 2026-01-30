@@ -105,14 +105,12 @@ void RedDotGame::drawTitleScreen()
 
 
 // Draw what's happening during actual gameplay.
-// TODO: I'd use std::format here, but that's C++ 20 only.
 void RedDotGame::drawPlayingScreen()
 {
     long now = GetCurrentTimeMsecs();
     long elapsed = now - m_playing_start_time;
-    char msg[64];
-    sprintf(msg,
-        "Elapsed time = %.2f seconds\n%d rounds left",
+    std::string msg = std::format(
+        "Elapsed time = {0:.2f} seconds\n{1} rounds left",
         elapsed / 1000.f, m_rounds_left);
 
     BeginDrawing();
@@ -163,8 +161,7 @@ void RedDotGame::drawPenaltyScreen()
     long how_long = std::min(m_penalty_count * INCR_PENALTY_TIMEOUT_MSECS, MAX_PENALTY_TIMEOUT_MSECS);
     long inverted = ((how_long - elapsed) / 1000.f) + 1;
 
-    char msg[64];
-    sprintf(msg, "OOPS! The penalty ends in %ld seconds...", inverted);
+    std::string msg = std::format("OOPS! The penalty ends in %ld seconds...", inverted);
 
     BeginDrawing();
     ClearBackground(RAYWHITE);
@@ -180,11 +177,11 @@ void RedDotGame::drawPenaltyScreen()
 
 
 // The game's all done. Show the final score.
-// TODO: I'd use std::format here, but that's C++ 20 only.
 void RedDotGame::drawFinalScreen() const
 {
-    char msg[64];
-    sprintf(msg, "Congrats!\nYou finished in %.2f seconds", m_playing_elapsed_time / 1000.f);
+    std::string msg = std::format(
+        "Congrats!\nYou finished in {0:.2f} seconds",
+        m_playing_elapsed_time / 1000.f);
 
     BeginDrawing();
     ClearBackground(RAYWHITE);
