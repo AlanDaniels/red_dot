@@ -20,6 +20,7 @@ public:
     RedDotGame();
     ~RedDotGame() = default;
 
+    static bool rollCall();
     bool init();
     bool detectLeftClick();
     static void drawTextInUpperLeft(const std::string &text);

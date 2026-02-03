@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <ctime>
 #include <chrono>
+#include <filesystem>
 
 #include "main.hpp"
 #include "constants.hpp"
@@ -34,16 +35,44 @@ RedDotGame::RedDotGame()
 }
 
 
+// Roll call for required resources.
+bool RedDotGame::rollCall()
+{
+    std::filesystem::path pwd = std::filesystem::current_path();
+    printf("Working directory = \"%s\"\n", pwd.c_str());
+
+    std::vector fnames = {
+        CLICK_SOUND_FNAME,
+        ERROR_SOUND_FNAME,
+        SUCCESS_SOUND_FNAME
+    };
+
+    bool success = true;
+    for (auto fname : fnames) {
+        if (! FileExists(fname)) {
+            printf("Required resource file \"%s\" does not exist.\n", fname);
+            success = false;
+        }
+    }
+
+    return success;
+}
+
+
 // Init.
 bool RedDotGame::init()
 {
+    if (! rollCall()) {
+        return false;
+    }
+
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Click The Red Dot");
     SetTargetFPS(60);
 
     InitAudioDevice();
-    m_click_sound = LoadSound("../computer-mouse-click-351398.wav");
-    m_error_sound = LoadSound("../error-08-206492.mp3");
-    m_finish_sound = LoadSound("../success-fanfare-trumpets-6185.mp3");
+    m_click_sound = LoadSound(CLICK_SOUND_FNAME);
+    m_error_sound = LoadSound(ERROR_SOUND_FNAME);
+    m_finish_sound = LoadSound(SUCCESS_SOUND_FNAME);
 
     unsigned int current_time = static_cast<unsigned int>(time(nullptr));
     SetRandomSeed(current_time);
@@ -220,7 +249,9 @@ void RedDotGame::mainLoop()
 int main(void)
 {
     RedDotGame game;
-    game.init();
+    if (! game.init()){
+        return 1;
+    }
     game.mainLoop();
     return 0;
 }
