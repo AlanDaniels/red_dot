@@ -79,8 +79,7 @@ bool RedDotGame::init()
 
     m_default_font = GetFontDefault();
     m_rounds_left = ROUNDS_PER_GAME;
-    m_dot_collection = std::make_unique<DotCollection>();
-    m_dot_collection->init();
+    m_dot_collection = nullptr;
     return true;
 }
 
@@ -117,7 +116,7 @@ bool RedDotGame::detectLeftClick()
 }
 
 
-// Draw the title screen.
+// Draw the title screen. Once they click, start the game.
 void RedDotGame::drawTitleScreen()
 {
     BeginDrawing();
@@ -128,6 +127,8 @@ void RedDotGame::drawTitleScreen()
     if (detectLeftClick()) {
         PlaySound(m_click_sound);
         m_game_mode = GAME_MODE::PLAYING;
+        m_dot_collection = std::make_unique<DotCollection>();
+        m_dot_collection->init();
         m_playing_start_time = GetCurrentTimeMsecs();
     }
 }
