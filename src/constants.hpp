@@ -14,7 +14,7 @@ constexpr int DOT_GROWTH_TIME_MSECS = 10000;
 constexpr int DOT_BEGIN_RADIUS = 5;
 constexpr int DOT_END_RADIUS = 80;
 
-constexpr int ROUNDS_PER_GAME = 5;
+constexpr int ROUNDS_PER_GAME = 10;
 constexpr int INCR_PENALTY_TIMEOUT_MSECS = 1000;
 constexpr int MAX_PENALTY_TIMEOUT_MSECS = 10000;
 
